@@ -7,8 +7,8 @@
 # Ignore Mac DS_Store Files
 .DS_Store
 
-# Ignore log files and locks
-index/*
+# Ignore user_uploads
+user_uploads/*
 
 # Local Settings
 local_settings.py
