@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block links %}
-<a class="button" href="/register?redirect_url={{redirect_url}}">Sign Up</a>
+<a class="button" href="register?redirect_url={{redirect_url}}">Sign Up</a>
 {% endblock %}
 {% block content %}
 <script type="text/javascript">
 </script>
-<form method="POST" action="/login">
+<form method="POST" action="login">
 	{% csrf_token %}
 	<input type="hidden" name="redirect_url" value="{{redirect_url}}" />
 	<h3>Login</h3>

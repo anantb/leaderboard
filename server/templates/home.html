@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block links %}
-<a class="button" href="/logout">Log out</a>
+<a class="button" href="logout">Log out</a>
 {% endblock %}
 {% block content %}
-<form action="/upload" enctype="multipart/form-data" method="post" >
+<form action="upload" enctype="multipart/form-data" method="post" >
 	{% csrf_token %}
 	<label for="result_file"> Result File</label><br />
 	<input type="file" name="result_file" id="result_file"/> <br /><br />
@@ -41,7 +41,7 @@ $(document).ready(function(){
 	refresh_scores = function() {
 		$.ajax({
 		    type: 'GET',
-		    url: '/scores', 
+		    url: 'scores', 
 		    success: function(result) {  
 		    	score_table.fnClearTable()
 		        result.res.forEach(function(r){

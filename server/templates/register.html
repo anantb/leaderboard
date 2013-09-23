@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block links %}
-<a class="button" href="/login?redirect_url={{redirect_url}}">Log In</a>
+<a class="button" href="login?redirect_url={{redirect_url}}">Log In</a>
 {% endblock %}
 {% block content %}
-<form method="POST" action="/register" autocomplete="off">
+<form method="POST" action="register" autocomplete="off">
 	{% csrf_token %}
 	<input type="hidden" name="redirect_url" value="{{redirect_url}}" />
 	<h3>Create a new account</h3>
