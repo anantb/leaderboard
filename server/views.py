@@ -165,8 +165,9 @@ def scores(request):
 
 
 @login_required
-def home(request):
-    c = csrf(request)
+def home(request, errors = None):
+    c = {'errors': errors}
+    c.update(csrf(request))
     return render_to_response('home.html', c)
 
 @login_required
@@ -188,9 +189,7 @@ def upload(request):
     except:
         msg = sys.exc_info()[1]
         errors.append(msg)
-        c = {'errors': errors}
-        c.update(csrf(request))
-        return render_to_response('home.html', c)
+        return HttpResponseRedirect(errors)
 
 
 
