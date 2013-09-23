@@ -164,7 +164,7 @@ def scores(request):
     for score in scores:
         f1 = 0
         try:
-            f1 = 2 * (score.precision * recall) / precision + recall
+            f1 = 2 * (score.precision * score.recall) / (score.precision + score.recall)
         except:
             pass
         res.append({
