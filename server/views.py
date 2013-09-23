@@ -219,7 +219,7 @@ def upload(request):
             user_score.save()
         except Score.DoesNotExist:
             user_score = Score(user=user, precision=score[0], recall=score[1])
-            score.save()
+            user_score.save()
         return HttpResponseRedirect('home')
     except:
         msg = sys.exc_info()[1]
