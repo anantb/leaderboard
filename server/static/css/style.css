@@ -198,6 +198,19 @@ table.dataTable thead tr th {
 	cursor: pointer;
 }
 
+table.dataTable thead th div.DataTables_sort_wrapper {
+    position: relative;
+    padding-right: 20px;
+    padding-right: 20px;
+}
+ 
+table.dataTable thead th div.DataTables_sort_wrapper span {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    right: 0;
+}
+
 
 
 table.dataTable tbody tr td {
