@@ -36,30 +36,30 @@ def login_required(f):
     def wrap(request, *args, **kwargs):
         if kLogIn not in request.session.keys():
         	if(len(args)>0):
-        		redirect_url = urlquote_plus("/%s/%s" %(args[0], f.__name__))
+        		redirect_url = urlquote_plus("%s/%s" %(args[0], f.__name__))
         	else:
-        		redirect_url = "/"
-        	return HttpResponseRedirect("/login?redirect_url=%s" %(redirect_url))
+        		redirect_url = ""
+        	return HttpResponseRedirect("login?redirect_url=%s" %(redirect_url))
         return f(request, *args, **kwargs)
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap
 
 
-def login_form(request, redirect_url='/', errors=[]):
+def login_form(request, redirect_url='', errors=[]):
     c = {'redirect_url':redirect_url, 'errors':errors}
     c.update(csrf(request))
     return render_to_response('login.html', c)
 
 
-def register_form(request, redirect_url='/', errors=[]):
+def register_form(request, redirect_url='', errors=[]):
     c = {'redirect_url':redirect_url, 'errors':errors}
     c.update(csrf(request))
     return render_to_response('register.html', c)
 
 
 def login(request):
-    redirect_url = '/'
+    redirect_url = ''
     if('redirect_url' in request.GET.keys()):
     	redirect_url = request.GET['redirect_url']
     if request.method == "POST":
@@ -88,7 +88,7 @@ def login(request):
         return login_form(request, redirect_url)
 
 def register(request):
-    redirect_url = '/'
+    redirect_url = ''
     if('redirect_url' in request.GET.keys()):
     	redirect_url = request.GET['redirect_url']
     if request.method == "POST":
@@ -143,7 +143,7 @@ def logout(request):
     	del request.session[kLogIn]
     if kName in request.session.keys():
     	del request.session[kName]
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('')
 
 
 def handle_uploaded_file(f, file_name):
@@ -183,7 +183,7 @@ def upload(request):
         except Score.DoesNotExist:
             score = Score(user=user, score=0.0)
             score.save()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('')
     except:
         c = {}
         c.update(csrf(request))
