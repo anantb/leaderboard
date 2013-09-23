@@ -145,11 +145,22 @@ def logout(request):
     	del request.session[kName]
     return HttpResponseRedirect('/')
 
+
+def handle_uploaded_file(f, request):
+    with open( p + '/user_uploads/' + request.session[kName] + '.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
 @login_required
 def home(request):
-    return render_to_response('home.html')
+    return render_to_response('home.html', csrf(request))
 
-
+@login_required
+def upload(request):
+    docfile = request.FILES['user_file']
+    handle_uploaded_file(docfile, request)
+    return HttpResponseRedirect('/')
 
 
 

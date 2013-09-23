@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
 	url(r'^$','server.views.home'),
 	url(r'^home$', 'server.views.home'),
+	url(r'^upload$', 'server.views.upload'),
 	
 	
 
