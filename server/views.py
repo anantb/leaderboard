@@ -162,10 +162,17 @@ def scores(request):
     res = []
     scores = Score.objects.all()
     for score in scores:
+        f1 = 0
+        try:
+            f1 = 2 * (score.precision * recall) / precision + recall
+        except:
+            pass
         res.append({
             'id': score.user.email,
             'name': score.user.f_name + ' ' + score.user.l_name,
-            'score': score.score
+            'precision': score.precision,
+            'recall': score.recall,
+            'f1': f1
         })
     return HttpResponse(json.dumps({'res': res}), mimetype="application/json")
 
@@ -185,8 +192,7 @@ def compute_score(file_name):
             pass
     precision = float(correct_count) / count
     recall = float(correct_count) / len(gold.keys())
-    score = 2 * (precision * recall) / precision + recall
-    return score
+    return [precision, recall]
 
 
 
@@ -208,10 +214,11 @@ def upload(request):
         score = compute_score(user_name + '.csv')
         try:
             user_score = Score.objects.get(user=user)
-            user_score.score = score
+            user_score.precision = score[0]
+            user_score.recall = score[1]
             user_score.save()
         except Score.DoesNotExist:
-            user_score = Score(user=user, score=score)
+            user_score = Score(user=user, precision=score[0], recall=score[1])
             score.save()
         return HttpResponseRedirect('home')
     except:

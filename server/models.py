@@ -28,7 +28,8 @@ class Score(models.Model):
 	id = models.AutoField(primary_key=True)
 	timestamp = models.DateTimeField(auto_now=True)
 	user = models.ForeignKey('User')
-	score = models.FloatField()
+	precision = models.FloatField()
+	recall = models.FloatField()
 
 	def __unicode__(self):
 		return self.user_id + '_score'
