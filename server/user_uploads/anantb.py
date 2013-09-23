@@ -1,52 +1,262 @@
-import operator
-import os
-
-from twitter_pb2 import *
-from json import loads
-from collections import defaultdict
-
-tweets = Tweets()
-with file('twitter.pb', 'r') as f:
-  tweets.ParseFromString(f.read())
-
-count_delete = 0
-count_reply_to = 0
-
-uid_count_all = defaultdict(int)
-uid_count_not_deleted = defaultdict(int)
-place_count = defaultdict(dict)
-
-for tweet in tweets.tweets:
-  if(tweet.is_delete):
-    count_delete += 1
-
-  if(tweet.insert.reply_to):
-    count_reply_to += 1
-
-  if(tweet.is_delete):
-    uid_count_all[tweet.delete.uid] += 1
-  else:
-    uid_count_all[tweet.insert.uid] += 1
-    uid_count_not_deleted[tweet.insert.uid] += 1
-
-  if(not tweet.is_delete and tweet.insert.place.url):
-    if ('count' in place_count[tweet.insert.place.id]):
-      place_count[tweet.insert.place.id]['count'] += 1
-      place_count[tweet.insert.place.id]['name'] = tweet.insert.place.name
-    else:
-      place_count[tweet.insert.place.id]['count'] = 1
-      place_count[tweet.insert.place.id]['name'] = tweet.insert.place.name
-
-
-sorted_uid_count_all = sorted(uid_count_all.iteritems(), key=operator.itemgetter(1), reverse=True)
-sorted_uid_count_not_deleted = sorted(uid_count_not_deleted.iteritems(), key=operator.itemgetter(1), reverse=True)
-sorted_place_count = sorted(place_count.iteritems(), key=operator.itemgetter(1), reverse=True)
-
-print count_delete
-print count_reply_to
-print sorted_uid_count_all[:5]
-print sorted_uid_count_not_deleted[:5]
-print [ (item[0], item[1]['name'], item[1]['count'])  for item in sorted_place_count[:5]]
-  
-  
-
+[
+  {
+    "country": "United States", 
+    "id": "4a898dc3f964a520620820e3", 
+    "latitude": 40.7500796629176, 
+    "locality": "New York", 
+    "longitude": -73.9846701491503, 
+    "name": "Toyama Sushi", 
+    "phone": "(212) 967-9541", 
+    "postal_code": "10018", 
+    "region": "NY", 
+    "street_address": "11 W. 36th St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4f445ce819836ed00193ad67", 
+    "latitude": 40.749908, 
+    "locality": "New York", 
+    "longitude": -73.986466, 
+    "name": "Pho La", 
+    "phone": "(212) 244-2709", 
+    "postal_code": "", 
+    "region": "NY", 
+    "street_address": "36 W. 35th St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4f32890d19836c91c7e1511b", 
+    "latitude": 40.757333, 
+    "locality": "New York", 
+    "longitude": -73.98041, 
+    "name": "A and Three S Food", 
+    "phone": "(212) 221-7519", 
+    "postal_code": "", 
+    "region": "NY", 
+    "street_address": "55 W. 47th St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4a105879f964a520a6761fe3", 
+    "latitude": 40.7609629991725, 
+    "locality": "New York", 
+    "longitude": -73.9863230017263, 
+    "name": "Saigon 48", 
+    "phone": "(212) 247-8669", 
+    "postal_code": "10036", 
+    "region": "NY", 
+    "street_address": "234 W. 48th St.", 
+    "website": "http://www.saigon48newyork.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4197f180f964a520111e1fe3", 
+    "latitude": 40.7233748942813, 
+    "locality": "New York", 
+    "longitude": -73.9883316575796, 
+    "name": "Sutra Lounge", 
+    "phone": "(212) 677-9477", 
+    "postal_code": "10009", 
+    "region": "NY", 
+    "street_address": "16 1st Ave.", 
+    "website": "http://www.sutranyc.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4f997b49d4f21823bb1f4cff", 
+    "latitude": 40.7830249032233, 
+    "locality": "New York", 
+    "longitude": -73.9529418103714, 
+    "name": "Baskin-Robbins", 
+    "phone": "(212) 722-5767", 
+    "postal_code": "10128", 
+    "region": "NY", 
+    "street_address": "1392 Lexington Ave.", 
+    "website": "http://www.baskinrobbins.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4a9c77ebf964a520493720e3", 
+    "latitude": 40.727698, 
+    "locality": "New York", 
+    "longitude": -73.985525, 
+    "name": "Cafe Rakka #2", 
+    "phone": "(212) 982-9166", 
+    "postal_code": "10003", 
+    "region": "NY", 
+    "street_address": "81 Saint Marks Pl.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4e67f4e26365d0e7120734fb", 
+    "latitude": 40.7290230776493, 
+    "locality": "New York", 
+    "longitude": -73.9808821678162, 
+    "name": "Double Wide Bar & Southern Grill", 
+    "phone": "(917) 261-6461", 
+    "postal_code": "10009", 
+    "region": "NY", 
+    "street_address": "505 E. 12th St.", 
+    "website": "http://www.doublewidebar.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "3fd66200f964a52071e61ee3", 
+    "latitude": 40.7260745775399, 
+    "locality": "New York", 
+    "longitude": -74.0093696283067, 
+    "name": "Ear Inn", 
+    "phone": "(212) 431-9750", 
+    "postal_code": "10013", 
+    "region": "NY", 
+    "street_address": "326 Spring St.", 
+    "website": "http://earinn.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4ba96f77f964a52007273ae3", 
+    "latitude": 40.754022346101, 
+    "locality": "New York", 
+    "longitude": -73.9665968860636, 
+    "name": "Indigo Indian Bistro", 
+    "phone": "(212) 421-1919", 
+    "postal_code": "10022", 
+    "region": "NY", 
+    "street_address": "357 East 50th St.", 
+    "website": "http://www.indigorestaurantnyc.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4ecf9a2877c8ea62fb13cc81", 
+    "latitude": 40.724717, 
+    "locality": "New York", 
+    "longitude": -73.993961, 
+    "name": "Parisi Bakery", 
+    "phone": "(212) 460-8750", 
+    "postal_code": "10012", 
+    "region": "NY", 
+    "street_address": "290 Elizabeth St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4fd0079e6b748e9d19ee3018", 
+    "latitude": 40.7184121198087, 
+    "locality": "New York", 
+    "longitude": -73.9939284324646, 
+    "name": "Snacks Table", 
+    "phone": null, 
+    "postal_code": "10002", 
+    "region": "NY", 
+    "street_address": "Grand St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4af180a2f964a52027e121e3", 
+    "latitude": 40.7140859412733, 
+    "locality": "New York", 
+    "longitude": -74.008584022522, 
+    "name": "MTA Subway - Chambers St (A/C/E)", 
+    "phone": null, 
+    "postal_code": "10007", 
+    "region": "NY", 
+    "street_address": "156 Church St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4afcba6af964a5206d2522e3", 
+    "latitude": 40.8502341936795, 
+    "locality": "New York", 
+    "longitude": -73.9332352443189, 
+    "name": "La Casa del Mofongo", 
+    "phone": "(212) 740-1200", 
+    "postal_code": "10033", 
+    "region": "NY", 
+    "street_address": "1447 Saint Nicholas Ave.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "51e01819498e129132a49b6d", 
+    "latitude": 40.758285, 
+    "locality": "New York", 
+    "longitude": -73.991704, 
+    "name": "Dunkin Donuts", 
+    "phone": null, 
+    "postal_code": "10036", 
+    "region": "NY", 
+    "street_address": "323 W. 42nd St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4bdb92b7383276b0c8b67369", 
+    "latitude": 40.7885350221502, 
+    "locality": "New York", 
+    "longitude": -73.9529871940613, 
+    "name": "Coffee Cart - 98th & Madison", 
+    "phone": "", 
+    "postal_code": "10029", 
+    "region": "NY", 
+    "street_address": "98th St.", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "4e6805fa196b01a6e9197d00", 
+    "latitude": 40.7584120540519, 
+    "locality": "New York", 
+    "longitude": -73.9843372812857, 
+    "name": "The Tank @ 46th St.", 
+    "phone": "", 
+    "postal_code": "", 
+    "region": "NY", 
+    "street_address": "", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "49db85d3f964a520d65e1fe3", 
+    "latitude": 40.7447534529368, 
+    "locality": "New York", 
+    "longitude": -74.0033483505249, 
+    "name": "La Bergamote", 
+    "phone": "(212) 627-9010", 
+    "postal_code": "10011", 
+    "region": "NY", 
+    "street_address": "177 9th Ave.", 
+    "website": "http://labergamotenyc.com"
+  }, 
+  {
+    "country": "United States", 
+    "id": "4ea9d0c06da1cafdada81eff", 
+    "latitude": 40.715092, 
+    "locality": "New York", 
+    "longitude": -74.007106, 
+    "name": "The Chateau at 67 Reade", 
+    "phone": null, 
+    "postal_code": "", 
+    "region": "NY", 
+    "street_address": "", 
+    "website": ""
+  }, 
+  {
+    "country": "United States", 
+    "id": "3fd66200f964a5203ae61ee3", 
+    "latitude": 40.725411, 
+    "locality": "New York", 
+    "longitude": -73.992313, 
+    "name": "Bistrot Margot", 
+    "phone": "(212) 274-1027", 
+    "postal_code": "10012", 
+    "region": "NY", 
+    "street_address": "26 Prince St.", 
+    "website": ""
+  }
+]

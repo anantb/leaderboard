@@ -1,4 +1,4 @@
-import json, sys, re, hashlib, smtplib, base64, urllib
+import json, sys, re, hashlib, smtplib, base64, urllib, csv
 
 
 from django.http import *
@@ -27,7 +27,13 @@ if(os.path.abspath(p+"/..") not in sys.path):
 kLogIn = "SESSION_LOGIN"
 kName = "SESSION_NAME"
 
+gold = {}
 
+f = open( p + '/gold/matches.csv', 'rU')
+reader = csv.reader(f)
+reader.next()
+for row in reader:
+    gold[row[0]] = row[1]
 
 '''
 LOGIN/REGISTER
@@ -164,6 +170,26 @@ def scores(request):
     return HttpResponse(json.dumps({'res': res}), mimetype="application/json")
 
 
+def compute_score(file_name):
+    f = open( p + '/user_uploads/' + file_name, 'rU')
+    reader = csv.reader(f)
+    reader.next()
+    count = 0
+    correct_count = 0
+    for row in reader:
+        count += 1
+        try:
+            if(gold[row[0]] == row[1]):
+                correct_count += 1
+        except:
+            pass
+    precision = correct_count / count
+    recall = correct_count / len(gold.keys())
+    score = 2 * (precision * recall) / float (precision + recall)
+    return score
+
+
+
 @login_required
 def home(request):
     c = csrf(request)
@@ -179,10 +205,13 @@ def upload(request):
         handle_uploaded_file(result_file,  user_name + '.csv')
         handle_uploaded_file(script_file,  user_name + '.py')
         user = User.objects.get(email=request.session[kLogIn])
+        score = compute_score(user_name + '.csv')
         try:
-            score = Score.objects.get(user=user)
+            user_score = Score.objects.get(user=user)
+            user_score.score = score
+            user_score.save()
         except Score.DoesNotExist:
-            score = Score(user=user, score=0.0)
+            user_score = Score(user=user, score=score)
             score.save()
         return HttpResponseRedirect('home')
     except:
