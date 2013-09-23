@@ -5,6 +5,11 @@
 {% block content %}
 <form action="upload" enctype="multipart/form-data" method="post" >
 	{% csrf_token %}
+	<div id="error">
+		{% for error in errors %}<span class="error">{{error}}</span><br />
+        {% endfor %}
+        <br />
+    </div>
 	<label for="result_file"> Result File</label><br />
 	<input type="file" name="result_file" id="result_file"/> <br /><br />
 	<label for="script_file">Script File</label><br />

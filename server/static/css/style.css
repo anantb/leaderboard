@@ -131,8 +131,9 @@ textarea {
 	max-width: 1024px;
 }
 
-.mobile-nav{
-  display:none;
+.error{
+  	color: red;
+	
 }
 
 #headlink-right{

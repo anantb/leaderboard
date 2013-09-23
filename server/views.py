@@ -171,6 +171,7 @@ def home(request):
 
 @login_required
 def upload(request):
+    errors = []
     try:
         user_name = re.match('\w+', request.session[kLogIn].lower()).group()
         result_file = request.FILES['result_file']
@@ -185,7 +186,9 @@ def upload(request):
             score.save()
         return HttpResponseRedirect('home')
     except:
-        c = {}
+        msg = sys.exc_info()[1]
+        errors.append(msg)
+        c = {'errors': errors}
         c.update(csrf(request))
         return render_to_response('home.html', c)
 
