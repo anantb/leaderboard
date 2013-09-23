@@ -183,6 +183,8 @@ def compute_score(file_name):
     reader.next()
     count = 0
     correct_count = 0
+    precision = 0.0
+    recall = 0.0
     for row in reader:
         count += 1
         try:
@@ -190,8 +192,11 @@ def compute_score(file_name):
                 correct_count += 1
         except:
             pass
-    precision = float(correct_count) / count
-    recall = float(correct_count) / len(gold.keys())
+    try:
+        precision = float(correct_count) / count
+        recall = float(correct_count) / len(gold.keys())
+    except:
+        pass
     return [precision, recall]
 
 
