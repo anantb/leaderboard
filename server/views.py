@@ -183,9 +183,9 @@ def compute_score(file_name):
                 correct_count += 1
         except:
             pass
-    precision = correct_count / count
-    recall = correct_count / len(gold.keys())
-    score = 2 * (precision * recall) / float (precision + recall)
+    precision = float(correct_count) / count
+    recall = float(correct_count) / len(gold.keys())
+    score = 2 * (precision * recall) / precision + recall
     return score
 
 
