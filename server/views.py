@@ -225,7 +225,7 @@ def upload(request):
             user_score.save()
         return HttpResponseRedirect('home')
     except:
-        msg = sys.exc_info()[1]
+        msg = str(sys.exc_info())
         errors.append(msg)
         c = {'errors': errors}
         c.update(csrf(request))
