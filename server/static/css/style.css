@@ -65,7 +65,8 @@ input[type="text"], input[type="password"], select{
 	font-size: 1em;
 }
 
-input[type="file"], input[type="file"]{
+input[type="file"]{
+	display: inline-block;
 	padding:0.5em;
 	border: #2B2B2B solid thin;
 	margin: 0.3em 0;
@@ -156,11 +157,11 @@ textarea {
 	color: #2B2B2B;
 }
 
-#headlink-right a.active{
+#headlink-right a.active {
   background-color: #E9E581; /*#00C8ED;*/
 }
 
-#page{
+#page {
 	position: relative;
 	margin:0 auto;
 	top: 3em;
@@ -175,11 +176,49 @@ textarea {
 
 
 
-#content{
+#content {
 	margin-top: 1.5em;
 	margin-bottom: 3.5em;
 	padding: 1.5em;
 	background-color: #FFF;
 }
+
+
+.dataTable{
+	width: 100%;
+}
+
+table.dataTable thead tr th {
+	color: #fff;
+	font-weight: bold;
+	padding: 10px 15px;
+	background: #2B2B2B;
+	text-align:left;
+	cursor: pointer;
+}
+
+
+
+table.dataTable tbody tr td {
+	vertical-align: top;
+	padding: 10px;
+	border-bottom: #ccc solid 1px; 
+}
+
+
+
+.dataTables_filter {
+	background: #f6f6f6;
+	padding: 10px;
+	font-weight: bold;
+}
+
+
+
+
+
+
+
+
 
 

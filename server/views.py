@@ -152,9 +152,22 @@ def handle_uploaded_file(f, file_name):
             destination.write(chunk)
 
 
+def scores(request):
+    res = []
+    scores = Score.objects.all()
+    for score in scores:
+        res.append({
+            'id': score.user.email,
+            'name': score.user.f_name + ' ' + score.user.l_name,
+            'score': score.score
+        })
+    return HttpResponse(json.dumps({'res': res}), mimetype="application/json")
+
+
 @login_required
 def home(request):
-    return render_to_response('home.html', csrf(request))
+    c = csrf(request)
+    return render_to_response('home.html', c)
 
 @login_required
 def upload(request):
@@ -164,15 +177,17 @@ def upload(request):
         script_file = request.FILES['script_file']
         handle_uploaded_file(result_file,  user_name + '.csv')
         handle_uploaded_file(script_file,  user_name + '.py')
+        user = User.objects.get(email=request.session[kLogIn])
+        try:
+            score = Score.objects.get(user=user)
+        except Score.DoesNotExist:
+            score = Score(user=user, score=0.0)
+            score.save()
         return HttpResponseRedirect('/')
     except:
         c = {}
         c.update(csrf(request))
         return render_to_response('home.html', c)
-
-
-
-
 
 
 

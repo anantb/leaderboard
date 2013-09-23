@@ -22,3 +22,17 @@ class User(models.Model):
 	class Meta:
 		app_label = 'server'
 		db_table = "users"
+
+
+class Score(models.Model):
+	id = models.AutoField(primary_key=True)
+	timestamp = models.DateTimeField(auto_now=True)
+	user = models.ForeignKey('User')
+	score = models.FloatField()
+
+	def __unicode__(self):
+		return self.user_id + '_score'
+
+	class Meta:
+		app_label = 'server'
+		db_table = "scores"

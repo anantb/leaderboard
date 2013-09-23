@@ -11,4 +11,51 @@
 	<input type="file" name="script_file" id="script_file"/><br /><br />
 	<input type="submit" value="Upload" class="button">
 </form>
+<hr/>
+<div id="scores">
+	<table id="score_table">
+		<thead>
+		<tr>
+			<th>Email</th>
+			<th>Name</th>
+			<th>Score</th>
+		</tr>
+		</thead>
+	</table>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	var score_table = $('#score_table').dataTable({
+		"sDom": '<"top"f<"clear">>rt<"bottom"ilp<"clear">>',
+		"bPaginate": false,
+		"bFilter": false,
+		"bInfo": false,
+		"sWidth": "100%",
+		"aoColumns": [                 
+			{"sWidth": "30%"},
+			{"sWidth": "50%"},
+			{"sWidth": "20%"},
+		]
+		
+	});
+	refresh_scores = function() {
+		$.ajax({
+		    type: 'GET',
+		    url: '/scores', 
+		    success: function(result) {  
+		    	score_table.fnClearTable()
+		        result.res.forEach(function(r){
+		        	score_table.fnAddData([r.id, r.name, r.score])
+		        })
+		    }
+		});
+	}
+	refresh_scores()
+	setInterval(refresh_scores, 10*1000)
+
+		
+
+});
+
+</script>
 {% endblock %}
