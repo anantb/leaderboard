@@ -146,8 +146,8 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 
-def handle_uploaded_file(f, request):
-    with open( p + '/user_uploads/' + request.session[kName] + '.txt', 'wb+') as destination:
+def handle_uploaded_file(f, file_name):
+    with open( p + '/user_uploads/' + file_name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -158,9 +158,17 @@ def home(request):
 
 @login_required
 def upload(request):
-    docfile = request.FILES['user_file']
-    handle_uploaded_file(docfile, request)
-    return HttpResponseRedirect('/')
+    try:
+        user_name = re.match('\w+', request.session[kLogIn].lower()).group()
+        result_file = request.FILES['result_file']
+        script_file = request.FILES['script_file']
+        handle_uploaded_file(result_file,  user_name + '.csv')
+        handle_uploaded_file(script_file,  user_name + '.py')
+        return HttpResponseRedirect('/')
+    except:
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('home.html', c)
 
 
 

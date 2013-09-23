@@ -5,7 +5,10 @@
 {% block content %}
 <form action="/upload" enctype="multipart/form-data" method="post" >
 	{% csrf_token %}
-	<input type="file" name="user_file" id="user_file"/>
+	<label for="result_file"> Result File</label><br />
+	<input type="file" name="result_file" id="result_file"/> <br /><br />
+	<label for="script_file">Script File</label><br />
+	<input type="file" name="script_file" id="script_file"/><br /><br />
 	<input type="submit" value="Upload" class="button">
 </form>
 {% endblock %}
