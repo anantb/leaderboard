@@ -1,0 +1,14 @@
+# Ignore all compiled python files.
+*.pyc
+
+# Ignore all emacs backup files
+*.*~
+
+# Ignore Mac DS_Store Files
+.DS_Store
+
+# Ignore log files and locks
+index/*
+
+# Local Settings
+local_settings.py
