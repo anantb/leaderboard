@@ -162,7 +162,7 @@ def scores(request):
     res = []
     scores = Score.objects.all()
     for score in scores:
-        f1 = 0
+        f1 = 0.0
         try:
             f1 = 2 * (score.precision * score.recall) / (score.precision + score.recall)
         except:
@@ -178,21 +178,22 @@ def scores(request):
 
 
 def compute_score(file_name):
-    f = open( p + '/user_uploads/' + file_name, 'rU')
-    reader = csv.reader(f)
-    reader.next()
     count = 0
     correct_count = 0
     precision = 0.0
     recall = 0.0
-    for row in reader:
-        count += 1
-        try:
-            if(gold[row[0]] == row[1]):
-                correct_count += 1
-        except:
-            pass
     try:
+        f = open( p + '/user_uploads/' + file_name, 'rU')
+        reader = csv.reader(f)
+        reader.next()
+        for row in reader:
+            count += 1
+            try:
+                if(gold[row[0]] == row[1]):
+                    correct_count += 1
+            except:
+                pass
+    
         precision = float(correct_count) / count
         recall = float(correct_count) / len(gold.keys())
     except:
