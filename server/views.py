@@ -210,35 +210,43 @@ def home(request):
 @login_required
 def upload(request):
     errors = []
+    error = False
     try:
         user_name = re.match('\w+', request.session[kLogIn].lower()).group()
         if('result_file' not in request.FILES):
             errors.append('Error: "results_file" missing.')
+            error = True
         if('script_file' not in request.FILES):
             errors.append('Error: "script_file" missing.')
-        result_file = request.FILES['result_file']
-        script_file = request.FILES['script_file']
-        handle_uploaded_file(result_file,  user_name + '.csv')
-        handle_uploaded_file(script_file,  user_name + '_' + str(script_file))
-        user = User.objects.get(email=request.session[kLogIn])
-        score = compute_score(user_name + '.csv')
-        try:
-            user_score = Score.objects.get(user=user)
-            user_score.precision = score[0]
-            user_score.recall = score[1]
-            user_score.save()
-        except Score.DoesNotExist:
-            user_score = Score(user=user, precision=score[0], recall=score[1])
-            user_score.save()
-        except:
-            errors.append('Error: Database error.')
-        return HttpResponseRedirect('home')
+            error = True
+        if (not error):
+            result_file = request.FILES['result_file']
+            script_file = request.FILES['script_file']
+            handle_uploaded_file(result_file,  user_name + '.csv')
+            handle_uploaded_file(script_file,  user_name + '_' + str(script_file))
+            user = User.objects.get(email=request.session[kLogIn])
+            score = compute_score(user_name + '.csv')
+            try:
+                user_score = Score.objects.get(user=user)
+                user_score.precision = score[0]
+                user_score.recall = score[1]
+                user_score.save()
+            except Score.DoesNotExist:
+                user_score = Score(user=user, precision=score[0], recall=score[1])
+                user_score.save()
+            except:
+                errors.append('Error: Database error.')
+                error = True
     except:
-        msg = "Error: unknown error."
-        errors.append(msg)
+        errors.append('Error: unknown error.')
+        error = True
+
+    if(error):
         c = {'errors': errors}
         c.update(csrf(request))
         return render_to_response('home.html', c)
+    else:
+        return HttpResponseRedirect('home')
 
 
 
