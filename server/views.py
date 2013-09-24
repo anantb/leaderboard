@@ -211,8 +211,9 @@ def compute_score(file_name):
 
 
 @login_required
-def home(request):
-    c = csrf(request)
+def home(request, errors=[]):
+    c = {'name': request.session[kName], 'errors': errors}
+    c.update(csrf(request))
     return render_to_response('home.html', c)
 
 @login_required
@@ -250,11 +251,9 @@ def upload(request):
         print sys.exc_info()
         errors.append('Error: unknown error.')
         error = True
-
+    
     if(error):
-        c = {'errors': errors}
-        c.update(csrf(request))
-        return render_to_response('home.html', c)
+        return home(request, errors)
     else:
         return HttpResponseRedirect('home')
 
