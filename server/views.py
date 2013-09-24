@@ -209,6 +209,10 @@ def upload(request):
     errors = []
     try:
         user_name = re.match('\w+', request.session[kLogIn].lower()).group()
+        if('result_file' not in request.FILES):
+            errors.append('Error: "results_file" missing.')
+        if('script_file' not in request.FILES):
+            errors.append('Error: "script_file" missing.')
         result_file = request.FILES['result_file']
         script_file = request.FILES['script_file']
         handle_uploaded_file(result_file,  user_name + '.csv')
@@ -223,9 +227,11 @@ def upload(request):
         except Score.DoesNotExist:
             user_score = Score(user=user, precision=score[0], recall=score[1])
             user_score.save()
+        except:
+            errors.append('Error: Database error.')
         return HttpResponseRedirect('home')
     except:
-        msg = str(sys.exc_info())
+        msg = "Error: couldn't parse the file."
         errors.append(msg)
         c = {'errors': errors}
         c.update(csrf(request))
