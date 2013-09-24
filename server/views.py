@@ -227,7 +227,7 @@ def upload(request):
             result_file = request.FILES['result_file']
             script_file = request.FILES['script_file']
             handle_uploaded_file(result_file,  user_name + '.csv')
-            handle_uploaded_file(script_file,  user_name + '_' + str(script_file))
+            handle_uploaded_file(script_file,  user_name + '_' + str(script_file) + str(time.time()))
             user = User.objects.get(email=request.session[kLogIn])
             score = compute_score(user_name + '.csv')
             try:
