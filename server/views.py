@@ -1,4 +1,4 @@
-import json, sys, re, hashlib, smtplib, base64, urllib, csv
+import json, sys, re, hashlib, smtplib, base64, urllib, csv, time
 
 
 from django.http import *
@@ -153,7 +153,11 @@ def logout(request):
 
 
 def handle_uploaded_file(f, file_name):
-    with open( p + '/user_uploads/' + file_name, 'wb+') as destination:
+    file_path = p + '/user_uploads/' + file_name
+    if (os.path.isfile(file_path)):
+        os.rename(file_path, file_path + time.time()))
+
+    with open(file_path , 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
