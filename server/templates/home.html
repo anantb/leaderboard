@@ -26,6 +26,7 @@
 			<th>Precision</th>
 			<th>Recall</th>
 			<th>F-1</th>
+			<th># Tries</th>
 		</tr>
 		</thead>
 	</table>
@@ -41,10 +42,11 @@ $(document).ready(function(){
 		"sWidth": "100%",
 		"aoColumns": [                 
 			{"sWidth": "25%"},
-			{"sWidth": "30%"},
-			{"sWidth": "15%"},
-			{"sWidth": "15%"},
-			{"sWidth": "15%"},
+			{"sWidth": "25%"},
+			{"sWidth": "10%"},
+			{"sWidth": "10%"},
+			{"sWidth": "18%"},
+			{"sWidth": "12%"},
 		]
 		
 	});
@@ -55,7 +57,7 @@ $(document).ready(function(){
 		    success: function(result) {  
 		    	score_table.fnClearTable()
 		        result.res.forEach(function(r){
-		        	score_table.fnAddData([r.id, r.name, r.precision, r.recall, r.f1])
+		        	score_table.fnAddData([r.id, r.name, r.precision, r.recall, r.f1, r.num_submissions])
 		        })
 		    }
 		});
