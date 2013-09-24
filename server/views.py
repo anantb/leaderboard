@@ -155,7 +155,7 @@ def logout(request):
 def handle_uploaded_file(f, file_name):
     file_path = p + '/user_uploads/' + file_name
     if (os.path.isfile(file_path)):
-        os.rename(file_path, file_path + time.time())
+        os.rename(file_path, file_path + '_' + str(time.time()))
 
     with open(file_path , 'wb+') as destination:
         for chunk in f.chunks():
@@ -242,6 +242,7 @@ def upload(request):
                 errors.append('Error: Database error.')
                 error = True
     except:
+        print sys.exc_info()
         errors.append('Error: unknown error.')
         error = True
 
