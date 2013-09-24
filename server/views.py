@@ -165,10 +165,10 @@ def handle_uploaded_file(f, file_name):
 def scores(request):
     res = []
     scores = Score.objects.all()
-    dir_list = os.listdir(p + '/user_uploads/')
+    #dir_list = os.listdir(p + '/user_uploads/')
     for score in scores:
-        file_name = re.match('\w+', score.user.email.lower()).group() + '.csv'
-        num_submissions = len([str(f) for f in dir_list if file_name in str(f)])
+        #file_name = re.match('\w+', score.user.email.lower()).group() + '.csv'
+        #num_submissions = len([str(f) for f in dir_list if file_name in str(f)])
         f1 = 0.0
         try:
             f1 = 2 * (score.precision * score.recall) / (score.precision + score.recall)
@@ -180,7 +180,7 @@ def scores(request):
             'precision': score.precision,
             'recall': score.recall,
             'f1': f1,
-            'num_submissions': num_submissions
+            'num_submissions': score.tries
         })
     return HttpResponse(json.dumps({'res': res}), mimetype="application/json")
 
@@ -238,9 +238,10 @@ def upload(request):
                 user_score = Score.objects.get(user=user)
                 user_score.precision = score[0]
                 user_score.recall = score[1]
+                user_score.tries += 1
                 user_score.save()
             except Score.DoesNotExist:
-                user_score = Score(user=user, precision=score[0], recall=score[1])
+                user_score = Score(user=user, precision=score[0], recall=score[1], tries = 1)
                 user_score.save()
             except:
                 errors.append('Error: Database error.')

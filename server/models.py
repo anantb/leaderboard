@@ -28,6 +28,7 @@ class Score(models.Model):
 	id = models.AutoField(primary_key=True)
 	timestamp = models.DateTimeField(auto_now=True)
 	user = models.ForeignKey('User')
+	tries = models.IntegerField()
 	precision = models.FloatField()
 	recall = models.FloatField()
 
