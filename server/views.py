@@ -202,8 +202,8 @@ def compute_score(file_name):
             except:
                 pass
 
-        precision = float(len(set(correct_count))) / count
-        recall = float(len(set(correct_count))) / len(gold.keys())
+        precision = float(len(set(correct_ans))) / count
+        recall = float(len(set(correct_ans))) / len(gold.keys())
     except:
         pass
     return [precision, recall]
