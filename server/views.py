@@ -186,6 +186,7 @@ def scores(request):
 
 
 def compute_score(file_name):
+    count = 0
     correct_ans = []
     precision = 0.0
     recall = 0.0
@@ -194,13 +195,14 @@ def compute_score(file_name):
         reader = csv.reader(f)
         reader.next()
         for row in reader:
+            count += 1
             try:
                 if(gold[row[0]] == row[1]):
                     correct_ans.append(row[0])
             except:
                 pass
 
-        precision = float(len(set(correct_ans))) / len(set(correct_ans))
+        precision = float(len(correct_ans)) / count
         recall = float(len(set(correct_ans))) / len(gold.keys())
     except:
         pass
