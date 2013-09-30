@@ -187,7 +187,7 @@ def scores(request):
 
 def compute_score(file_name):
     count = 0
-    correct_count = 0
+    correct_ans = []
     precision = 0.0
     recall = 0.0
     try:
@@ -198,12 +198,12 @@ def compute_score(file_name):
             count += 1
             try:
                 if(gold[row[0]] == row[1]):
-                    correct_count += 1
+                    correct_ans.append(row[0])
             except:
                 pass
 
-        precision = float(correct_count) / count
-        recall = float(correct_count) / len(gold.keys())
+        precision = float(len(set(correct_count))) / count
+        recall = float(len(set(correct_count))) / len(gold.keys())
     except:
         pass
     return [precision, recall]
