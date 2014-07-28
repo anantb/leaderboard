@@ -1,2 +1,1 @@
-leaderboard
-===========
+##### A simple leaderboard app
